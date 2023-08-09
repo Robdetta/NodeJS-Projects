@@ -8,4 +8,5 @@ const express_1 = __importDefault(require("express"));
 const router = express_1.default.Router();
 exports.router = router;
 const tasks_1 = require("../controllers/tasks");
-router.route('/').get(tasks_1.getAllTasks);
+router.route('/').get(tasks_1.getAllTasks).post(tasks_1.createTasks);
+router.route('/:id').get(tasks_1.getTasks).patch(tasks_1.updateTasks).delete(tasks_1.deleteTasks);

@@ -1,7 +1,14 @@
 import express, { Request, Response } from 'express';
 const router = express.Router();
-import { getAllTasks } from '../controllers/tasks';
+import {
+  getAllTasks,
+  createTasks,
+  getTasks,
+  updateTasks,
+  deleteTasks,
+} from '../controllers/tasks';
 
-router.route('/').get(getAllTasks);
+router.route('/').get(getAllTasks).post(createTasks);
+router.route('/:id').get(getTasks).patch(updateTasks).delete(deleteTasks);
 
 export { router };
