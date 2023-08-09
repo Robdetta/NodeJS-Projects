@@ -1,8 +1,8 @@
-import { Schema, model } from 'mongoose';
+import { Schema, model, Document } from 'mongoose';
 import 'dotenv/config';
 
 //create an interface representing a document in MongoDB
-interface ITask {
+interface ITask extends Document {
   name: string;
   completed: boolean;
 }
