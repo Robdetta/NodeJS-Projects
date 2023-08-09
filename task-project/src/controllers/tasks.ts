@@ -1,13 +1,15 @@
 import { Request, Response } from 'express';
+import { TaskDB } from '../models/task';
 
 const getAllTasks = (req: Request, res: Response) => {
-  res.send('all items from the file');
+  res.send('get all tasks');
 };
-const createTasks = (req: Request, res: Response) => {
-  res.send('creating tasks');
+const createTasks = async (req: Request, res: Response) => {
+  const task = await TaskDB.create(req.body);
+  res.status(201).json({ task });
 };
 const getTasks = (req: Request, res: Response) => {
-  res.send('getting');
+  res.send({ id: req.params.id });
 };
 const updateTasks = (req: Request, res: Response) => {
   res.send('updating');
