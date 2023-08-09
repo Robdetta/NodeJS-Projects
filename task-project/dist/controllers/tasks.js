@@ -12,7 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteTasks = exports.updateTasks = exports.getTasks = exports.createTasks = exports.getAllTasks = void 0;
 const task_1 = require("../models/task");
 const getAllTasks = (req, res) => {
-    res.send('get all tasks');
+    res.send('get all tasking');
 };
 exports.getAllTasks = getAllTasks;
 const createTasks = (req, res) => __awaiter(void 0, void 0, void 0, function* () {

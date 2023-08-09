@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import { TaskDB } from '../models/task';
 
 const getAllTasks = (req: Request, res: Response) => {
-  res.send('get all tasks');
+  res.send('get all tasking');
 };
 const createTasks = async (req: Request, res: Response) => {
   const task = await TaskDB.create(req.body);

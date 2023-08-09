@@ -8,8 +8,16 @@ interface ITask extends Document {
 }
 //create a schema corresponding to the document interface
 const TaskSchema = new Schema<ITask>({
-  name: { type: String, required: true },
-  completed: { type: Boolean, required: true },
+  name: {
+    type: String,
+    required: [true, 'must provide a name'],
+    trim: true,
+    maxlength: [20, 'name can not be more than 20 characters'],
+  },
+  completed: {
+    type: Boolean,
+    default: false,
+  },
 });
 //create a model
 const TaskDB = model<ITask>('Task', TaskSchema);
