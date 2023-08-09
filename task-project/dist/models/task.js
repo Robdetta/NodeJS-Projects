@@ -23,9 +23,16 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.mongoose = void 0;
 const mongoose_1 = __importStar(require("mongoose"));
+exports.mongoose = mongoose_1.default;
+require("dotenv/config");
 const TaskSchema = new mongoose_1.default.Schema({
     name: { type: String, required: true },
     completed: { type: Boolean, required: true },
 });
 const TaskDB = (0, mongoose_1.model)('Task', TaskSchema);
+mongoose_1.default
+    .connect(process.env.MONGO_URL)
+    .then(() => console.log('Connected to the DB'))
+    .catch((err) => console.log(err));

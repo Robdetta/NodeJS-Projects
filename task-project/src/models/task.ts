@@ -1,4 +1,5 @@
-import mongoose, { Schema, model } from 'mongoose';
+import mongoose, { model } from 'mongoose';
+import 'dotenv/config';
 
 interface ITask {
   name: string;
@@ -11,3 +12,10 @@ const TaskSchema = new mongoose.Schema<ITask>({
 });
 
 const TaskDB = model<ITask>('Task', TaskSchema);
+
+mongoose
+  .connect(process.env.MONGO_URL!)
+  .then(() => console.log('Connected to the DB'))
+  .catch((err) => console.log(err));
+
+export { mongoose };
