@@ -1,19 +1,10 @@
-import express, { Request, Response, NextFunction } from 'express';
-import todoRoutes from './routes/tasks';
-
+import express, { Request, Response } from 'express';
 const app = express();
 
-const port = 3000;
+const port: number = 3000;
 
-app.use(express.json({ type: 'application/*+json' }));
-
-app.use('/todos', todoRoutes);
-
-// app.get('/', (req, res) => {
-//   res.send('Task Project 2');
-// });
-app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
-  res.status(500).json({ message: err.message });
+app.get('/hello', (req: Request, res: Response) => {
+  res.send('Something here');
 });
 
-app.listen(port);
+app.listen(port, () => console.log(`server is listening on ${port}...`));
