@@ -4,7 +4,11 @@ import { TaskDB } from '../models/task';
 const getAllTasks = async (req: Request, res: Response) => {
   try {
     const tasks = await TaskDB.find({});
-    res.status(200).json({ tasks });
+    // res.status(200).json({ tasks });
+    //res.status(200).json({ tasks, amount: tasks.length });
+    res
+      .status(200)
+      .json({ success: true, data: { tasks, amount: tasks.length } });
   } catch (error) {
     res.status(500).json({ msg: error });
   }
@@ -29,11 +33,34 @@ const getTasks = async (req: Request, res: Response) => {
     res.status(500).json({ msg: error });
   }
 };
-const updateTasks = (req: Request, res: Response) => {
-  res.send('updating');
+
+const deleteTasks = async (req: Request, res: Response) => {
+  try {
+    const { id: taskID } = req.params;
+    const task = await TaskDB.findOneAndDelete({ _id: taskID });
+    if (!task) {
+      return res.status(404).json({ msg: `No task with id: : ${taskID}` });
+    }
+    res.status(200).json({ task });
+  } catch (error) {
+    res.status(500).json({ msg: error });
+  }
 };
-const deleteTasks = (req: Request, res: Response) => {
-  res.send('deleting');
+
+const updateTasks = async (req: Request, res: Response) => {
+  try {
+    const { id: taskID } = req.params;
+    const task = await TaskDB.findOneAndUpdate({ _id: taskID }, req.body, {
+      new: true,
+      runValidators: true,
+    });
+    if (!task) {
+      return res.status(404).json({ msg: `No task with id: : ${taskID}` });
+    }
+    res.status(200).json({ task });
+  } catch (error) {
+    res.status(500).json({ msg: error });
+  }
 };
 
 export { getAllTasks, createTasks, getTasks, updateTasks, deleteTasks };

@@ -14,7 +14,11 @@ const task_1 = require("../models/task");
 const getAllTasks = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const tasks = yield task_1.TaskDB.find({});
-        res.status(200).json({ tasks });
+        // res.status(200).json({ tasks });
+        //res.status(200).json({ tasks, amount: tasks.length });
+        res
+            .status(200)
+            .json({ success: true, data: { tasks, amount: tasks.length } });
     }
     catch (error) {
         res.status(500).json({ msg: error });
@@ -45,11 +49,34 @@ const getTasks = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 exports.getTasks = getTasks;
-const updateTasks = (req, res) => {
-    res.send('updating');
-};
-exports.updateTasks = updateTasks;
-const deleteTasks = (req, res) => {
-    res.send('deleting');
-};
+const deleteTasks = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { id: taskID } = req.params;
+        const task = yield task_1.TaskDB.findOneAndDelete({ _id: taskID });
+        if (!task) {
+            return res.status(404).json({ msg: `No task with id: : ${taskID}` });
+        }
+        res.status(200).json({ task });
+    }
+    catch (error) {
+        res.status(500).json({ msg: error });
+    }
+});
 exports.deleteTasks = deleteTasks;
+const updateTasks = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { id: taskID } = req.params;
+        const task = yield task_1.TaskDB.findOneAndUpdate({ _id: taskID }, req.body, {
+            new: true,
+            runValidators: true,
+        });
+        if (!task) {
+            return res.status(404).json({ msg: `No task with id: : ${taskID}` });
+        }
+        res.status(200).json({ task });
+    }
+    catch (error) {
+        res.status(500).json({ msg: error });
+    }
+});
+exports.updateTasks = updateTasks;

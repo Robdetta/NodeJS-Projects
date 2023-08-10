@@ -2,17 +2,15 @@ import express, { Request, Response } from 'express';
 const app = express();
 import { router } from './routes/tasks';
 import { connectDB } from './db/connect';
+import { notFound } from './middleware/not-found';
 
 const port: number = 3000;
 
+app.use(express.static('./public'));
 app.use(express.json());
-
-//routes
-app.get('/hello', (req: Request, res: Response) => {
-  res.send('Something here');
-});
-
 app.use('/api/v1/tasks', router);
+
+app.use(notFound);
 
 const start = async () => {
   try {
