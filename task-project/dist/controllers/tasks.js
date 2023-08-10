@@ -11,13 +11,25 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteTasks = exports.updateTasks = exports.getTasks = exports.createTasks = exports.getAllTasks = void 0;
 const task_1 = require("../models/task");
-const getAllTasks = (req, res) => {
+const getAllTasks = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const tasks = yield task_1.TaskDB.find({});
+        res.status(200).json({ tasks });
+    }
+    catch (error) {
+        res.status(500).json({ msg: error });
+    }
     res.send('get all tasking');
-};
+});
 exports.getAllTasks = getAllTasks;
 const createTasks = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const task = yield task_1.TaskDB.create(req.body);
-    res.status(201).json({ task });
+    try {
+        const task = yield task_1.TaskDB.create(req.body);
+        res.status(201).json({ task });
+    }
+    catch (error) {
+        res.status(500).json({ msg: error });
+    }
 });
 exports.createTasks = createTasks;
 const getTasks = (req, res) => {
