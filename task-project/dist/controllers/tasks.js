@@ -19,7 +19,6 @@ const getAllTasks = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
     catch (error) {
         res.status(500).json({ msg: error });
     }
-    res.send('get all tasking');
 });
 exports.getAllTasks = getAllTasks;
 const createTasks = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -32,9 +31,19 @@ const createTasks = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
     }
 });
 exports.createTasks = createTasks;
-const getTasks = (req, res) => {
-    res.send({ id: req.params.id });
-};
+const getTasks = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { id: taskID } = req.params;
+        const task = yield task_1.TaskDB.findOne({ _id: taskID });
+        if (!task) {
+            return res.status(404).json({ msg: `No task with id: : ${taskID}` });
+        }
+        res.status(200).json({ task });
+    }
+    catch (error) {
+        res.status(500).json({ msg: error });
+    }
+});
 exports.getTasks = getTasks;
 const updateTasks = (req, res) => {
     res.send('updating');
