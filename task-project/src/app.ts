@@ -1,18 +1,20 @@
-import express, { Request, Response } from 'express';
+import express from 'express';
 const app = express();
 import { router } from './routes/tasks';
 import { connectDB } from './db/connect';
+import { notFound } from './middleware/not-found';
+import { errorHandlerMiddleware } from './middleware/error-handler';
 
-const port: number = 3000;
+const port: number | undefined = process.env.PORT
+  ? parseInt(process.env.PORT, 10)
+  : 3000;
 
+app.use(express.static('./public'));
 app.use(express.json());
-
-//routes
-app.get('/hello', (req: Request, res: Response) => {
-  res.send('Something here');
-});
-
 app.use('/api/v1/tasks', router);
+
+app.use(notFound);
+app.use(errorHandlerMiddleware);
 
 const start = async () => {
   try {
