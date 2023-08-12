@@ -12,12 +12,27 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.getAllProducts = exports.getAllProductsStatic = void 0;
 const products_1 = require("../models/products");
 const getAllProductsStatic = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const products = yield products_1.productsDB.find({});
-    // throw new Error('testing async error');
-    res.status(200).json({ products });
+    const search = 'ab';
+    const products = yield products_1.productsDB.find({
+        name: { $regex: search, $options: 'i' },
+    });
+    res.status(200).json({ products, hbHits: products.length });
 });
 exports.getAllProductsStatic = getAllProductsStatic;
 const getAllProducts = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    res.status(200).json({ msg: 'products route' });
+    const { featured, company, name } = req.query;
+    const queryObject = {};
+    if (featured) {
+        queryObject.featured = featured === 'true' ? true : false;
+    }
+    if (company) {
+        queryObject.company = company;
+    }
+    if (name) {
+        queryObject.name = { $regex: name, $options: 'i' };
+    }
+    console.log(queryObject);
+    const products = yield products_1.productsDB.find(queryObject);
+    res.status(200).json({ products, hbHits: products.length });
 });
 exports.getAllProducts = getAllProducts;
