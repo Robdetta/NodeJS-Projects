@@ -32,18 +32,22 @@ const getAllProducts = (req, res) => __awaiter(void 0, void 0, void 0, function*
         queryObject.name = { $regex: name, $options: 'i' };
     }
     console.log(queryObject);
-    if (numericFilters) {
+    if (typeof numericFilters === 'string') {
         const operatorMap = {
             '>': '$gt',
             '>=': '$gte',
             '=': '$eq',
-            '<': '$gt',
+            '<': '$lt',
             '<=': '$lte',
         };
         const regEx = /\b(<|>|>=|=|<|<=)\b/g;
-        let filters = numericFilters.replace(regEx, (match) => `-${operatorMap[match]}-`);
+        // Convert numericFilters to a string if it's an array
+        const numericFiltersString = Array.isArray(numericFilters)
+            ? numericFilters.join(',')
+            : numericFilters;
+        const filters = numericFiltersString.replace(regEx, (match) => `-${operatorMap[match]}-`);
         const options = ['price', 'rating'];
-        filters = filters.split(',').forEach((item) => {
+        filters.split(',').forEach((item) => {
             const [field, operator, value] = item.split('-');
             if (options.includes(field)) {
                 queryObject[field] = { [operator]: Number(value) };

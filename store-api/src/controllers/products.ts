@@ -1,6 +1,5 @@
 import { Request, Response } from 'express';
 import { productsDB } from '../models/products';
-import { match } from 'assert';
 
 const getAllProductsStatic = async (req: Request, res: Response) => {
   const products = await productsDB
@@ -32,22 +31,28 @@ const getAllProducts = async (req: Request, res: Response) => {
   }
 
   console.log(queryObject);
-
-  if (numericFilters) {
+  if (typeof numericFilters === 'string') {
     const operatorMap: Record<string, string> = {
       '>': '$gt',
       '>=': '$gte',
       '=': '$eq',
-      '<': '$gt',
+      '<': '$lt',
       '<=': '$lte',
     };
     const regEx = /\b(<|>|>=|=|<|<=)\b/g;
-    let filters = numericFilters.replace(
+
+    // Convert numericFilters to a string if it's an array
+    const numericFiltersString = Array.isArray(numericFilters)
+      ? numericFilters.join(',')
+      : numericFilters;
+
+    const filters = numericFiltersString.replace(
       regEx,
       (match: string | number) => `-${operatorMap[match]}-`,
     );
+
     const options = ['price', 'rating'];
-    filters = filters.split(',').forEach((item) => {
+    filters.split(',').forEach((item) => {
       const [field, operator, value] = item.split('-');
       if (options.includes(field)) {
         queryObject[field] = { [operator]: Number(value) };
