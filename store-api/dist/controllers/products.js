@@ -10,8 +10,11 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getAllProducts = exports.getAllProductsStatic = void 0;
+const products_1 = require("../models/products");
 const getAllProductsStatic = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    res.status(200).json({ msg: 'products testing route' });
+    const products = yield products_1.productsDB.find({});
+    // throw new Error('testing async error');
+    res.status(200).json({ products });
 });
 exports.getAllProductsStatic = getAllProductsStatic;
 const getAllProducts = (req, res) => __awaiter(void 0, void 0, void 0, function* () {

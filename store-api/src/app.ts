@@ -2,7 +2,8 @@ import express, { Request, Response } from 'express';
 import 'dotenv/config';
 import { connectDB } from './db/connect';
 import { router as productsRouter } from './routes/products';
-//async error
+import 'express-async-errors'; //async error
+
 import { notFound as notFoundMiddleWare } from './middleware/not-found';
 import { errorHandlerMiddleWare as errorMiddleWare } from './middleware/error-handler';
 const app = express();

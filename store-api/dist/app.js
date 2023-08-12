@@ -16,7 +16,7 @@ const express_1 = __importDefault(require("express"));
 require("dotenv/config");
 const connect_1 = require("./db/connect");
 const products_1 = require("./routes/products");
-//async error
+require("express-async-errors"); //async error
 const not_found_1 = require("./middleware/not-found");
 const error_handler_1 = require("./middleware/error-handler");
 const app = (0, express_1.default)();
